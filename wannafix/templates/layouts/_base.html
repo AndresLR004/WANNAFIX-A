@@ -33,6 +33,11 @@
                         {% if current_user.is_admin_or_moderator() %}
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/admin">Administració</a></li>
                         {% endif %}
+                        {% if current_user.is_authenticated %}
+                            <li class="nav-item mx-0 mx-lg-1">
+                                <a class="nav-link py-3 px-0 px-lg-3 rounded" href="/user">Personal</a>
+                            </li>
+                        {% endif %}
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/logout">Tancar sessió</a></li>
                     {% else %}
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/login">Iniciar sessió</a></li>

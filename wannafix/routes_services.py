@@ -89,44 +89,45 @@ def service_create():
         return render_template('services/create.html', form = form)
 
 
-# @services_bp.route('/services/update/<int:product_id>',methods = ['POST', 'GET'])
-# @perm_required(Action.services_update)
-# def product_update(product_id):
-#     # select amb 1 resultat
-#     product = Product.get(product_id)
+@services_bp.route('/services/update/<int:service_id>',methods = ['POST', 'GET'])
+@perm_required(Action.services_update)
+def service_update(service_id):
+    # select amb 1 resultat
+    service = Service.get(service_id)
     
-#     if not product:
-#         abort(404)
+    if not service:
+        abort(404)
 
-#     if not current_user.is_action_allowed_to_product(Action.services_update, product):
-#         abort(403)
+    if not current_user.is_action_allowed_to_service(Action.services_update, service):
+        abort(403)
 
-#     # selects que retornen una llista de resultats
-#     categories = Category.get_all()
-#     statuses = Status.get_all()
+    # selects que retornen una llista de resultats
+    categories = Category.get_all()
+    statuses = Status.get_all()
 
-#     # carrego el formulari amb l'objecte services
-#     form = ProductForm(obj = product)
-#     form.category_id.choices = [(category.id, category.name) for category in categories]
-#     form.status_id.choices = [(status.id, status.name) for status in statuses]
+    # carrego el formulari amb l'objecte services
+    form = ServiceForm(obj = service)
+    form.category_id.choices = [(category.id, category.name) for category in categories]
+    form.status_id.choices = [(status.id, status.name) for status in statuses]
 
-#     if form.validate_on_submit(): # si s'ha fet submit al formulari
-#         # dades del formulari a l'objecte product
-#         form.populate_obj(product)
+    if form.validate_on_submit(): # si s'ha fet submit al formulari
+        service = Service()
+        # dades del formulari a l'objecte product
+        form.populate_obj(service)
 
-#         # si hi ha foto
-#         filename = __manage_photo_file(form.photo_file)
-#         if filename:
-#             product.photo = filename
+        # si hi ha foto
+        filename = __manage_photo_file(form.photo_file)
+        if filename:
+            product.photo = filename
 
-#         # update!
-#         product.update()
+        # update!
+        product.update()
 
-#         # https://en.wikipedia.org/wiki/Post/Redirect/Get
-#         flash("Producte actualitzat", "success")
-#         return redirect(url_for('services_bp.product_read', product_id = product_id))
-#     else: # GET
-#         return render_template('services/update.html', product_id = product_id, form = form)
+        # https://en.wikipedia.org/wiki/Post/Redirect/Get
+        flash("Producte actualitzat", "success")
+        return redirect(url_for('services_bp.service_read', service_id = service_id))
+    else: # GET
+        return render_template('services/update.html', service_id = service_id, form = form)
 
 @services_bp.route('/services/delete/<int:service_id>',methods = ['GET', 'POST'])
 @perm_required(Action.services_delete)
@@ -141,7 +142,7 @@ def service_delete(service_id):
         abort(403)
 
     form = ConfirmForm()
-    if form.validate_on_submit(): # si s'ha fet submit al formulari
+    if form.validate_on_submit():
         # delete!
         service.delete()
 
